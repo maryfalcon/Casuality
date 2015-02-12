@@ -10,6 +10,8 @@ import com.sun.javafx.fxml.ParseTraceElement;
 
 public class CauseFinder {
 	
+	private static HashMap<String,HashMap<String,Integer>> causeMap;
+	
 	/**
 	 * Regular expression to parse sentence
 	 */
@@ -30,6 +32,8 @@ public class CauseFinder {
 	
 	private static void initialize(){
 		sentenceList=new LinkedList<String>();
+		causeMap = new HashMap<String,HashMap<String,Integer>>();
+		SentenceParser.initialize();
 	}
 	
 	private static void  readFiles(String result){
@@ -53,9 +57,11 @@ public class CauseFinder {
 			//text = text.replaceAll("\\s+", " ");
 			 final Matcher matcher = SENTENCE_PATTERN.matcher(text);
 		        while (matcher.find()) {
-		        	if(matcher.group().contains(result))
+		        	if(matcher.group().contains(result)){
 		        		sentenceList.add(matcher.group());
-		        		
+		        		SentenceParser.getCause(matcher.group(),result,causeMap);
+		        	}
 		        }
 	}
+	
 }
